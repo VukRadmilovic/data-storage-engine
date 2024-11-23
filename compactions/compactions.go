@@ -1,4 +1,4 @@
-package kompakcije
+package compactions
 
 import (
 	"encoding/binary"
@@ -17,13 +17,13 @@ type entry struct {
 	loaded    bool
 }
 
-func Kompakcija(merge int, maxLevel int,bloomPer float64) {
+func Compaction(merge int, maxLevel int, bloomPer float64) {
 	//1 iteration for every level
 	for level := 1; level < maxLevel; level++ {
 		last := FindLastFile(level)
 		//Try to merge until can't
 		for next := true; next; {
-			next = mergeTables(merge, level,bloomPer)
+			next = mergeTables(merge, level, bloomPer)
 			//Delete merged tables
 			if next {
 				tidyLevel(level, merge, last)
@@ -32,7 +32,7 @@ func Kompakcija(merge int, maxLevel int,bloomPer float64) {
 	}
 }
 
-func mergeTables(merge int, level int,bloomPer float64) bool {
+func mergeTables(merge int, level int, bloomPer float64) bool {
 	//Slice of files to merge
 	files, err := loadTables(merge, level)
 	if err {
@@ -42,7 +42,7 @@ func mergeTables(merge int, level int,bloomPer float64) bool {
 	//Data for the new table
 	newTableData := fillData(files)
 	closeFiles(files)
-	SSTable.MakeTable(newTableData, level+1,bloomPer)
+	SSTable.MakeTable(newTableData, level+1, bloomPer)
 	return true
 }
 
@@ -216,8 +216,8 @@ func findBest(entrys []entry) (entry, int) {
 
 func closeFiles(files []*os.File) {
 	for _, file := range files {
-		err:= file.Close()
-		if err != nil{
+		err := file.Close()
+		if err != nil {
 			//println("nesto")
 			panic(err)
 		}

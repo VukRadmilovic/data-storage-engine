@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"main/SSTable"
-	"main/kompakcije"
+	"main/compactions"
 	"os"
 	"strconv"
 	"strings"
@@ -352,7 +352,7 @@ func main() {
 	println(system.put("test", "444", []byte("cetvrti testt")))
 	//println(system.Delete("test", "2"))
 	//println(string(system.get("test", "2")))
-	kompakcije.Kompakcija(system.config.compaction_size, system.config.max_height, system.config.bloom_precision)
+	compactions.Compaction(system.config.compaction_size, system.config.max_height, system.config.bloom_precision)
 	//println(string(system.get("test", "2")))
 	//println(string(system.get("test", "2")))
 	//println(system.put("test", "", []byte("cetvrti test")))
